@@ -97,7 +97,7 @@ function build() {
 PKG="github.com/All-Hands-AI/OpenHands/cli/internal"
 
 VERSION="${VERSION:-$(version)}"
-SANDBOX="${SANDBOX:-docker.all-hands.dev/all-hands-ai/runtime:0.13-nikolai}"
+SANDBOX="${SANDBOX:-docker.all-hands.dev/all-hands-ai/runtime:0.13-nikolaik}"
 IMAGE="${IMAGE:-ghcr.io/all-hands-ai/openhands:0.9}"
 
 go fmt ./...
