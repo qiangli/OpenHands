@@ -12,7 +12,7 @@ var (
 	AppOS      = "unknown"
 
 	SandBox = "docker.all-hands.dev/all-hands-ai/runtime:0.13-nikolaik"
-	Image   = "openaide/openhands:latest"
+	Image   = "docker.all-hands.dev/all-hands-ai/openhands:0.13"
 )
 
 type Config struct {

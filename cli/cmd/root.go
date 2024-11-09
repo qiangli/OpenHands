@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"path/filepath"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -33,7 +34,9 @@ func validateFlags(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("workspace must be specified")
 	}
 
-	cfg.Workspace = args[0]
+	if cfg.Workspace, err = filepath.Abs(args[0]); err != nil {
+		return err
+	}
 	cfg.Args = args[1:]
 
 	// validate port
@@ -100,9 +103,10 @@ func Execute() {
 var cfg internal.Config
 
 func init() {
-	// load defaults from env
-	model := os.Getenv("LLM_MODEL")
-	apiKey := os.Getenv("LLM_API_KEY")
+	// TODO
+	// // load defaults from env
+	// model := os.Getenv("LLM_MODEL")
+	// apiKey := os.Getenv("LLM_API_KEY")
 
 	// flags
 	rootCmd.PersistentFlags().BoolP("help", "h", false, "Display help and exit")
@@ -114,8 +118,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfg.Image, "image", internal.Image, "Specify the OpenHands Docker image")
 	rootCmd.PersistentFlags().StringVar(&cfg.Sandbox, "sandbox", internal.SandBox, "Specify the Sandbox Docker image")
 
-	rootCmd.PersistentFlags().StringVar(&cfg.LLM.Model, "llm-model", model, "Specify the LLM model")
-	rootCmd.PersistentFlags().StringVar(&cfg.LLM.APIKey, "llm-api-key", apiKey, "Specify the LLM API key")
+	// rootCmd.PersistentFlags().StringVar(&cfg.LLM.Model, "llm-model", model, "Specify the LLM model")
+	// rootCmd.PersistentFlags().StringVar(&cfg.LLM.APIKey, "llm-api-key", apiKey, "Specify the LLM API key")
 
 	rootCmd.PersistentFlags().StringVar(&cfg.Command, "command", defaultCommand, "Specify the Docker command to use")
 
@@ -133,8 +137,8 @@ func buildArgs(cfg *internal.Config) error {
 		"-e", "SANDBOX_RUNTIME_CONTAINER_IMAGE=" + cfg.Sandbox,
 		"-e", "SANDBOX_USER_ID=" + u.Uid,
 		"-e", "WORKSPACE_MOUNT_PATH=" + cfg.Workspace,
-		"-e", "LLM_API_KEY=" + cfg.LLM.APIKey,
-		"-e", "LLM_MODEL=" + cfg.LLM.Model,
+		// "-e", "LLM_API_KEY=" + cfg.LLM.APIKey,
+		// "-e", "LLM_MODEL=" + cfg.LLM.Model,
 		"-v", "/var/run/docker.sock:/var/run/docker.sock",
 		"-v", cfg.Workspace + ":/opt/workspace_base",
 		"-p", fmt.Sprintf("%v:3000", cfg.Port),
