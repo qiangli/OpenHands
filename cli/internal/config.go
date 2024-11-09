@@ -11,8 +11,8 @@ var (
 	AppVersion = "0.0.1" // Semver version
 	AppOS      = "unknown"
 
-	SandBox = "ghcr.io/all-hands-ai/runtime:0.9-nikolaik"
-	Image   = "ghcr.io/all-hands-ai/openhands:0.9"
+	SandBox = "docker.all-hands.dev/all-hands-ai/runtime:0.13-nikolaik"
+	Image   = "openaide/openhands:latest"
 )
 
 type Config struct {
